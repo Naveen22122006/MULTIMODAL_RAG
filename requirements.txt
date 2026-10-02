@@ -1,0 +1,17 @@
+langchain
+langchain-community
+langchain-openai
+langchain-core
+langchain-groq
+langchain-huggingface
+langchain-pinecone
+pinecone
+sentence-transformers
+chromadb
+pypdf
+PyMuPDF
+groq
+pillow
+pandas
+ipykernel
+dotenv

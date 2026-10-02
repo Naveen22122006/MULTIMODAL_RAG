@@ -1,0 +1,20 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+#here .venv and .venv/ same but using .venv/ makes ignore directory
+.venv/
+
+# Environment variables / API keys
+.env
+
+#images
+images/
+
+#fallback data
+
