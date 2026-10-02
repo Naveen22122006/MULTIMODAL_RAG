@@ -75,140 +75,7 @@ Text LLM-->	openai/gpt-oss-20b
 Vision LLM-->	qwen/qwen3.8-27b
 Embedding model-->	sentence-transformers/all-MiniLM-L6-v2 (384-dimensional vectors)
 
-      ---WORK FLOW
-
-📄 Multimodal PDF Processing
-
-Each PDF page is processed for three modalities: Text, Table, and Visual.
-
-Text:
-
-PDF → Text → LangChain Document
-
-Tables:
-
-PDF Table → Pandas DataFrame → Markdown → LangChain Document\
-
-Images / Charts / Diagrams:
-
-
-PDF Image
-   ↓
-Extract Image
-   ↓
-Base64 Data URI
-   ↓
-Groq Vision Model
-   ↓
-Visual Summary
-   ↓
-LangChain Document
-
-Each document contains metadata such as:
-
-page
-modality
-source
-table_number
-image_path
-
-
-🔢 Embeddings & Vector Database
-
-Extracted documents are converted into embeddings using all-MiniLM-L6-v2 with a dimension of 384 and normalization enabled.
-Pinecone configuration:
-Setting	Value
-Index	multimodal-rag
-Namespace	demo_fy2026
-Metric	cosine
-Vector type	dense
-Dimension	384
-Cloud	AWS
-Region	us-east-1
-
-♻️ Duplicate Prevention
-
-The project creates stable IDs for extracted documents using their source, page, modality, and document position.
-
-text
-Document
-   ↓
-Generate ID
-   ↓
-Check Pinecone
-   ├── Already exists → Skip
-   └── New document   → Upload
-
-This prevents the same documents from being uploaded repeatedly.
-
-🔎 Retrieval
-
-The system creates a Pinecone retriever with k = 5.
-
-text
-Question
-   ↓
-Embedding
-   ↓
-Pinecone Semantic Search
-   ↓
-Top 5 Relevant Documents
-
-The retrieved documents provide the context used by the LLM.
-
-🧠 RAG Pipeline
-
-Normal text questions
-
-text
-User Question
-     ↓
-Pinecone Retrieval
-     ↓
-Relevant Context
-     ↓
-Prompt
-     ↓
-Groq Text LLM
-     ↓
-Answer
-
-When retrieved documents contain visual information
-
-text
-User Question
-     ↓
-Pinecone Retrieval
-     ↓
-Visual Document Found
-     ↓
-Load Original Image
-     ↓
-Convert Image to Base64
-     ↓
-Groq Vision LLM
-     ↓
-Answer
-
-Up to three retrieved visual images can be provided to the vision model.
-
-💬 Example
-
-The notebook provides an ask() function:
-
-python
-ask("give me brief about NovaCore")
-
-The function:
-
-Retrieves relevant documents from Pinecone
-Builds the retrieved context
-Checks for visual documents
-Selects the appropriate LLM
-Generates the answer
-Displays retrieved sources
-Displays retrieved images when available
-
+  
 ⚙️ Setup
 
 Create the environment:
@@ -235,7 +102,7 @@ python -m ipykernel install --user --name multimodelrag
 Open main.ipynb and select the multimodelrag kernel.
 
 📁 Project Structure
-text
+
 multimodelrag/
 │
 ├── main.ipynb
